@@ -22,8 +22,3 @@ workflows:
     artifacts:
       - build/DerivedData/Build/Products/Release-iphoneos/Buie.app
       - /tmp/xcodebuild_logs/*.log
-    publishing:
-      email:
-        notify:
-          success: true
-          failure: true
