@@ -1,0 +1,29 @@
+workflows:
+  buie-ios-unsigned:
+    name: Buie iOS — unsigned device build
+    max_build_duration: 120
+    instance_type: mac_mini_m2
+    environment:
+      xcode: latest
+    scripts:
+      - name: Install build tools
+        script: brew install cmake xcodegen
+      - name: Build llama.cpp for iOS arm64
+        script: |
+          chmod +x scripts/prepare_llama.sh
+          ./scripts/prepare_llama.sh
+      - name: Generate Xcode project
+        script: xcodegen generate
+      - name: Build unsigned iOS app
+        script: |
+          xcodebuild -project Buie.xcodeproj -scheme Buie \
+            -configuration Release -destination 'generic/platform=iOS' \
+            -derivedDataPath build/DerivedData CODE_SIGNING_ALLOWED=NO build
+    artifacts:
+      - build/DerivedData/Build/Products/Release-iphoneos/Buie.app
+      - /tmp/xcodebuild_logs/*.log
+    publishing:
+      email:
+        notify:
+          success: true
+          failure: true

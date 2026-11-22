@@ -1,0 +1,50 @@
+name: Buie
+options:
+  bundleIdPrefix: com.jonnojohannes
+  deploymentTarget:
+    iOS: "16.4"
+  createIntermediateGroups: true
+settings:
+  base:
+    SWIFT_VERSION: "5.9"
+    IPHONEOS_DEPLOYMENT_TARGET: "16.4"
+    TARGETED_DEVICE_FAMILY: "1,2"
+    ENABLE_BITCODE: NO
+    CLANG_CXX_LANGUAGE_STANDARD: "c++17"
+    HEADER_SEARCH_PATHS:
+      - "$(PROJECT_DIR)/vendor/llama.cpp/include"
+      - "$(PROJECT_DIR)/vendor/llama.cpp/ggml/include"
+    LIBRARY_SEARCH_PATHS:
+      - "$(PROJECT_DIR)/vendor/llama.cpp/build-ios"
+targets:
+  Buie:
+    type: application
+    platform: iOS
+    sources:
+      - path: Buie
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.jonnojohannes.buie
+        PRODUCT_NAME: Buie
+        INFOPLIST_KEY_CFBundleDisplayName: Buie
+        INFOPLIST_KEY_LSApplicationCategoryType: public.app-category.developer-tools
+        GENERATE_INFOPLIST_FILE: YES
+        SWIFT_OBJC_BRIDGING_HEADER: Buie/Bridge/Buie-Bridging-Header.h
+        OTHER_LDFLAGS:
+          - "-lbuie_llama"
+          - "-framework"
+          - "Metal"
+          - "-framework"
+          - "MetalKit"
+          - "-framework"
+          - "Accelerate"
+          - "-framework"
+          - "Foundation"
+          - "-framework"
+          - "CoreGraphics"
+          - "-lc++"
+        CODE_SIGN_STYLE: Automatic
+        MARKETING_VERSION: "1.0.0"
+        CURRENT_PROJECT_VERSION: "1"
+    scheme:
+      testTargets: []
